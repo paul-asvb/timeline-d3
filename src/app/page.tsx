@@ -130,7 +130,32 @@ export default function Timeline() {
           .attr("transform", `translate(0, ${height})`)
           .call(xAxis);
 
-        // Zoom functionality removed as requested
+
+        const zoom = d3
+          .zoom()
+          .scaleExtent([0.5, 10]) // Zoom range
+          .on("zoom", zoomed);
+
+        svg.call(zoom as any);
+
+        function zoomed(event: d3.D3ZoomEvent<SVGSVGElement, unknown>) {
+          const newXScale = event.transform.rescaleX(xScale);
+          g.select(".x-axis").call(xAxis.scale(newXScale));
+          g.select(".grid").call(
+            d3
+              .axisBottom(newXScale)
+              .tickSize(-height)
+              .tickFormat(() => "") as any,
+          );
+
+          g.selectAll(".event-dot").attr("cx", (d: any) =>
+            newXScale(d.parsedDate!),
+          );
+          g.selectAll(".event-label").attr("x", (d: any) =>
+            newXScale(d.parsedDate!),
+          );
+        }
+
 
         // Create event groups organized by rows
         const eventGroups = g
@@ -208,11 +233,104 @@ export default function Timeline() {
           .on("mouseout", function () {
             tooltip.transition().duration(300).style("opacity", 0);
           });
-        // Double-click zoom removed as requested
+        svg.on("dblclick.zoom", null); // Disable double-click zoom
+        // Double-click to zoom in
+        svg.on("dblclick", function (event) {
+          const [mouseX] = d3.pointer(event);
+          const currentZoom = d3.zoomTransform(svg.node() as Element);
+          const newZoom = currentZoom.translate(-mouseX, 0).scale(2).translate(mouseX, 0);
 
-        // Zoom controls removed as requested
+          svg.transition().duration(500).call(zoom.transform as any, newZoom);
+        });
 
-        // Zoom instructions removed as requested
+
+        const controls = svg
+          .append("g")
+          .attr(
+            "transform",
+            `translate(${width + margin.left - 60}, ${height + margin.top + 40})`,
+          );
+
+        controls
+          .append("circle")
+          .attr("r", 12)
+          .attr("fill", "#f0f0f0")
+          .attr("stroke", "#ccc")
+          .attr("cursor", "pointer")
+          .on("click", () => {
+            svg.transition().duration(500).call(zoom.scaleBy as any, 1.2);
+          });
+
+        controls
+          .append("text")
+          .attr("x", 0)
+          .attr("y", 1)
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .attr("font-size", "18px")
+          .attr("font-weight", "bold")
+          .text("+")
+          .attr("pointer-events", "none");
+
+        controls
+          .append("circle")
+          .attr("cx", 28)
+          .attr("r", 12)
+          .attr("fill", "#f0f0f0")
+          .attr("stroke", "#ccc")
+          .attr("cursor", "pointer")
+          .on("click", () => {
+            svg.transition().duration(500).call(zoom.scaleBy as any, 0.8);
+          });
+
+        controls
+          .append("text")
+          .attr("x", 28)
+          .attr("y", 1)
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .attr("font-size", "18px")
+          .attr("font-weight", "bold")
+          .text("-")
+          .attr("pointer-events", "none");
+
+        controls
+          .append("rect")
+          .attr("x", 52)
+          .attr("y", -12)
+          .attr("width", 24)
+          .attr("height", 24)
+          .attr("rx", 3)
+          .attr("ry", 3)
+          .attr("fill", "#f0f0f0")
+          .attr("stroke", "#ccc")
+          .attr("cursor", "pointer")
+          .on("click", () => {
+            svg.transition().duration(500).call(zoom.transform as any, d3.zoomIdentity);
+          });
+
+        controls
+          .append("text")
+          .attr("x", 64)
+          .attr("y", 1)
+          .attr("text-anchor", "middle")
+          .attr("dominant-baseline", "middle")
+          .attr("font-size", "12px")
+          .text("Reset")
+          .attr("pointer-events", "none");
+
+
+
+        // Zoom instructions
+        svg
+          .append("text")
+          .attr("x", margin.left)
+          .attr("y", height + margin.top + 60)
+          .attr("font-size", "14px")
+          .attr("font-family", "Arial, sans-serif")
+          .attr("fill", "#666")
+          .text("Use mouse wheel to zoom, click and drag to pan.");
+
 
         // Legend removed as requested
       } catch (error) {
