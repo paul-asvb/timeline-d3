@@ -12,6 +12,8 @@ interface Event {
   Seq: number;
 }
 
+const MARGIN = 100;
+
 export default function Timeline() {
   const svgRef = useRef<SVGSVGElement>(null);
 
@@ -43,7 +45,7 @@ export default function Timeline() {
           eventTypeToRow.set(type, index);
         });
 
-        const margin = { top: 20, right: 30, bottom: 60, left: 60 };
+        const margin = { top: MARGIN, right: MARGIN, bottom: MARGIN, left: MARGIN };
         const width = window.innerWidth - margin.left - margin.right;
         const rowHeight = 60; // Fixed row height for better readability
         const height = rowHeight * (eventTypes.length + 1); // Dynamic height based on number of event types
@@ -232,7 +234,7 @@ export default function Timeline() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 p-8">
       <svg ref={svgRef} className="w-full"></svg>
     </div>
   );
