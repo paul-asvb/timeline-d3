@@ -13,6 +13,8 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: Set up Node.js
       uses: actions/setup-node@v4
@@ -33,16 +35,39 @@ jobs:
       env:
         NEXT_PUBLIC_BASE_PATH: /timemaschine
 
+    - name: Verify output directory
+      run: ls -la out/ || echo "out directory not found"
+
+    - name: Check index.html
+      run: test -f out/index.html && echo "index.html found" || echo "index.html not found"
+
     - name: Upload static build artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: static-build
         path: out/
 
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main'
-      uses: peaceiris/actions-gh-pages@v3
+      uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./out
         keep_files: false
+        force_orphan: true
+        user_name: 'github-actions[bot]'
+        user_email: 'github-actions[bot]@users.noreply.github.com'
+        commit_message: 'Deploy static site to GitHub Pages'
+        enable_jekyll: false
+        cname: ''
+      continue-on-error: true
+
+    - name: Check deployment status
+      if: always() && github.ref == 'refs/heads/main'
+      run: |
+        echo "Build completed successfully"
+        echo "If GitHub Pages deployment failed, please check:"
+        echo "1. GitHub Pages is enabled in repository settings"
+        echo "2. The gh-pages branch exists or can be created"
+        echo "3. The GITHUB_TOKEN has write permissions"
+        echo "4. The repository is public (or GitHub Pages is enabled for private repos)"
