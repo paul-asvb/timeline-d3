@@ -27,7 +27,7 @@ export default function Timeline() {
         const events = data.Changes as Event[];
 
         const parseDate = d3.timeParse("%Y%m%dT%H%M%S");
-        const formatDate = d3.timeFormat("%Y-%m-%d %H:%M:%S");
+        const formatDate = d3.timeFormat("%Y-%m-%d %H:%M:%S.%L");
 
         const processedEvents = events
           .map((event) => ({
@@ -82,7 +82,7 @@ export default function Timeline() {
             "StablePatient",
           ]);
 
-        const timeFormat = d3.timeFormat("%H:%M:%S");
+        const timeFormat = d3.timeFormat("%H:%M:%S.%L");
         const xAxis = d3.axisBottom(xScale).tickFormat(timeFormat as any);
 
         // Add grid lines
@@ -133,7 +133,7 @@ export default function Timeline() {
 
         const zoom = d3
           .zoom()
-          .scaleExtent([0.5, 10]) // Zoom range
+          .scaleExtent([0.01, 1000]) // Zoom range
           .on("zoom", zoomed);
 
         svg.call(zoom as any);
