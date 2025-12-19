@@ -22,7 +22,7 @@ export default function Timeline() {
 
     const loadData = async () => {
       try {
-        const response = await fetch("/events.json");
+        const response = await fetch("https://raw.githubusercontent.com/paul-asvb/timeline-d3/refs/heads/main/public/events.json");
         const data = await response.json();
         const events = data.Changes as Event[];
 
@@ -320,7 +320,6 @@ export default function Timeline() {
           .attr("pointer-events", "none");
 
 
-
         // Zoom instructions
         svg
           .append("text")
@@ -352,8 +351,6 @@ export default function Timeline() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <svg ref={svgRef} className="w-full"></svg>
-    </div>
+    <svg ref={svgRef} className="w-full"></svg>
   );
 }

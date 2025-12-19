@@ -30,29 +30,29 @@ jobs:
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
 
-    - name: Build static site
+    - name: Build with Vite
       run: pnpm build
       env:
-        NEXT_PUBLIC_BASE_PATH: /timemaschine
+        NEXT_PUBLIC_BASE_PATH: /timeline-d3
 
     - name: Verify output directory
-      run: ls -la out/ || echo "out directory not found"
+      run: ls -la dist/ || echo "dist directory not found"
 
     - name: Check index.html
-      run: test -f out/index.html && echo "index.html found" || echo "index.html not found"
+      run: test -f dist/index.html && echo "index.html found" || echo "index.html not found"
 
     - name: Upload static build artifact
       uses: actions/upload-artifact@v4
       with:
         name: static-build
-        path: out/
+        path: dist/
 
     - name: Deploy to GitHub Pages
       if: github.ref == 'refs/heads/main'
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./out
+        publish_dir: ./dist
         keep_files: false
         force_orphan: true
         user_name: 'github-actions[bot]'

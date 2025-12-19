@@ -1,89 +1,79 @@
-# timemaschine
+# Timeline D3 - React SPA with Vite
 
-A medical events timeline visualization with interactive features.
+This project is a single React SPA using Vite for development and building.
 
-## Features
+## Project Structure
 
-- ✅ **Interactive Timeline**: Visualize medical events over time
-- ✅ **Drag to Pan**: Click and drag to navigate the timeline
-- ✅ **Scroll to Zoom**: Use mouse wheel to zoom in/out (0.5x to 5x range)
-- ✅ **Double-Click Zoom**: Double-click events to focus on them
-- ✅ **Event Organization**: Events organized by type in separate rows
-- ✅ **Detailed Tooltips**: Hover over events for detailed information
-- ✅ **Responsive Design**: Adapts to different screen sizes
+```
+/
+├── src/            # React SPA source files
+├── public/         # Static assets
+├── package.json    # Project configuration
+├── vite.config.ts  # Vite configuration
+└── .github/        # GitHub Actions workflows
+```
 
 ## Development
 
+### Prerequisites
+
+- Node.js v20+
+- pnpm v8+
+
+### Installation
+
 ```bash
 pnpm install
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-## Static Build & Deployment
-
-This project supports static export for easy deployment:
-
-### Build for Production
+### Running the app
 
 ```bash
+# Start the development server
+pnpm dev
+
+# Build for production
 pnpm build
+
+# Preview production build
+pnpm preview
 ```
 
-This will create a static build in the `out/` directory.
+### Available Scripts
 
-### GitHub Pages Deployment
+- `pnpm dev` - Start development server with hot reloading
+- `pnpm build` - Build production-ready static files
+- `pnpm preview` - Preview production build locally
+- `pnpm lint` - Run linting
+- `pnpm format` - Format code
 
-The project includes a GitHub Actions workflow (`.github/workflows/static-build.yml`) that automatically:
+## Deployment
 
-1. Builds the static site on every push to `main`
-2. Deploys to GitHub Pages
-3. Uploads build artifacts for download
+The application is configured for GitHub Pages deployment. The GitHub Actions workflow:
+
+1. Installs dependencies
+2. Builds the application using Vite
+3. Deploys to GitHub Pages on main branch pushes
 
 ### Environment Variables
 
-For GitHub Pages deployment, set the base path:
+- `NEXT_PUBLIC_BASE_PATH` - Set to `/timeline-d3/` for GitHub Pages deployment
 
-```bash
-NEXT_PUBLIC_BASE_PATH=/timemaschine pnpm build
-```
+## Technology Stack
 
-## Interaction Guide
+- **Framework**: React 19
+- **Build Tool**: Vite 5
+- **Styling**: Tailwind CSS
+- **Data Visualization**: D3.js
+- **Package Manager**: pnpm
 
-- **Drag to Pan**: Click and drag anywhere on the timeline
-- **Scroll to Zoom**: Use mouse wheel to zoom in/out
-- **Double-Click Events**: Double-click any event to zoom in on it
-- **Hover for Details**: Hover over events to see tooltips with detailed information
-- **Zoom Level**: Current zoom level is displayed in the top-right corner
+## Key Features
 
-## Data Format
+1. **Fast Development**: Vite provides instant hot module replacement
+2. **Static Export**: Configured for static HTML/CSS/JS output suitable for GitHub Pages
+3. **Base Path Support**: Proper handling of GitHub Pages base path
+4. **Modern Tooling**: Uses latest React 19, Vite 5, and Tailwind CSS
 
-The application expects event data in JSON format at `/public/events.json`:
+## License
 
-```json
-{
-  "Changes": [
-    {
-      "ChangeType": "NewSeries",
-      "Date": "20251009T120945",
-      "ID": "event-id",
-      "Path": "/series/event-id",
-      "ResourceType": "Series",
-      "Seq": 12345
-    }
-  ]
-}
-```
-
-## Technologies
-
-- Next.js 16 with App Router
-- D3.js for interactive visualizations
-- TypeScript for type safety
-- Tailwind CSS for styling
-- pnpm for package management
-
-## Remember
-
-<https://visjs.github.io/vis-timeline/examples/timeline/basicUsage.html>
+MIT
