@@ -22,7 +22,7 @@ export default function Timeline() {
 
     const loadData = async () => {
       try {
-        const response = await fetch("https://raw.githubusercontent.com/paul-asvb/timeline-d3/refs/heads/main/public/events.json");
+        const response = await fetch("https://raw.githubusercontent.com/paul-asvb/timeline-d3/refs/heads/static/public/events.json");
         const data = await response.json();
         const events = data.Changes as Event[];
 
