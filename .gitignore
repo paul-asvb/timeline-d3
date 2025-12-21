@@ -8,19 +8,6 @@ apps/*/build/
 packages/*/dist/
 packages/*/build/
 
-# Next.js
-.next/
-.out/
-
-# Vite
-vite.config.ts
-
-# IDE
-.idea/
-.vscode/
-*.swp
-*.swo
-
 # Environment
 .env
 .env.local
