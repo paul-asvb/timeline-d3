@@ -44,11 +44,15 @@ jobs:
       id: deployment
       uses: actions/upload-artifact@v4
       with:
+        name: github-pages
         path: dist/
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     
     steps:
       - name: Deploy to GitHub Pages
