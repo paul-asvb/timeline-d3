@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { useEffect, useRef, useState } from "react";
 import Timeline from "./components/Timeline";
 
 interface Event {

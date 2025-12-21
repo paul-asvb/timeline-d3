@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
+import { useEffect, useRef, useState } from "react";
 
 interface Event {
   ChangeType: string;
@@ -22,7 +22,9 @@ export default function Timeline() {
 
     const loadData = async () => {
       try {
-        const response = await fetch("https://raw.githubusercontent.com/paul-asvb/timeline-d3/refs/heads/static/public/events.json");
+        const response = await fetch(
+          "https://raw.githubusercontent.com/paul-asvb/timeline-d3/refs/heads/static/public/events.json",
+        );
         const data = await response.json();
         const events = data.Changes as Event[];
 
@@ -45,7 +47,12 @@ export default function Timeline() {
           eventTypeToRow.set(type, index);
         });
 
-        const margin = { top: MARGIN, right: MARGIN, bottom: MARGIN, left: MARGIN };
+        const margin = {
+          top: MARGIN,
+          right: MARGIN,
+          bottom: MARGIN,
+          left: MARGIN,
+        };
         const width = window.innerWidth - margin.left - margin.right;
         const rowHeight = 60; // Fixed row height for better readability
         const height = rowHeight * (eventTypes.length + 1); // Dynamic height based on number of event types
@@ -130,7 +137,6 @@ export default function Timeline() {
           .attr("transform", `translate(0, ${height})`)
           .call(xAxis);
 
-
         const zoom = d3
           .zoom()
           .scaleExtent([0.01, 1000]) // Zoom range
@@ -155,7 +161,6 @@ export default function Timeline() {
             newXScale(d.parsedDate!),
           );
         }
-
 
         // Create event groups organized by rows
         const eventGroups = g
@@ -217,7 +222,7 @@ export default function Timeline() {
           .style("max-width", "300px");
 
         eventGroups
-          .on("mouseover", function (event, d) {
+          .on("mouseover", (event, d) => {
             tooltip.transition().duration(200).style("opacity", 0.9);
             tooltip
               .html(`
@@ -230,19 +235,24 @@ export default function Timeline() {
               .style("left", event.pageX + 15 + "px")
               .style("top", event.pageY - 35 + "px");
           })
-          .on("mouseout", function () {
+          .on("mouseout", () => {
             tooltip.transition().duration(300).style("opacity", 0);
           });
         svg.on("dblclick.zoom", null); // Disable double-click zoom
         // Double-click to zoom in
-        svg.on("dblclick", function (event) {
+        svg.on("dblclick", (event) => {
           const [mouseX] = d3.pointer(event);
           const currentZoom = d3.zoomTransform(svg.node() as Element);
-          const newZoom = currentZoom.translate(-mouseX, 0).scale(2).translate(mouseX, 0);
+          const newZoom = currentZoom
+            .translate(-mouseX, 0)
+            .scale(2)
+            .translate(mouseX, 0);
 
-          svg.transition().duration(500).call(zoom.transform as any, newZoom);
+          svg
+            .transition()
+            .duration(500)
+            .call(zoom.transform as any, newZoom);
         });
-
 
         const controls = svg
           .append("g")
@@ -258,7 +268,10 @@ export default function Timeline() {
           .attr("stroke", "#ccc")
           .attr("cursor", "pointer")
           .on("click", () => {
-            svg.transition().duration(500).call(zoom.scaleBy as any, 1.2);
+            svg
+              .transition()
+              .duration(500)
+              .call(zoom.scaleBy as any, 1.2);
           });
 
         controls
@@ -280,7 +293,10 @@ export default function Timeline() {
           .attr("stroke", "#ccc")
           .attr("cursor", "pointer")
           .on("click", () => {
-            svg.transition().duration(500).call(zoom.scaleBy as any, 0.8);
+            svg
+              .transition()
+              .duration(500)
+              .call(zoom.scaleBy as any, 0.8);
           });
 
         controls
@@ -306,7 +322,10 @@ export default function Timeline() {
           .attr("stroke", "#ccc")
           .attr("cursor", "pointer")
           .on("click", () => {
-            svg.transition().duration(500).call(zoom.transform as any, d3.zoomIdentity);
+            svg
+              .transition()
+              .duration(500)
+              .call(zoom.transform as any, d3.zoomIdentity);
           });
 
         controls
@@ -319,7 +338,6 @@ export default function Timeline() {
           .text("Reset")
           .attr("pointer-events", "none");
 
-
         // Zoom instructions
         svg
           .append("text")
@@ -329,7 +347,6 @@ export default function Timeline() {
           .attr("font-family", "Arial, sans-serif")
           .attr("fill", "#666")
           .text("Use mouse wheel to zoom, click and drag to pan.");
-
 
         // Legend removed as requested
       } catch (error) {
@@ -350,7 +367,5 @@ export default function Timeline() {
     };
   }, []);
 
-  return (
-    <svg ref={svgRef} className="w-full"></svg>
-  );
+  return <svg ref={svgRef} className="w-full"></svg>;
 }

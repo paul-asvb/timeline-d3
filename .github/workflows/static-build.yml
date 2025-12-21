@@ -11,6 +11,9 @@ on:
   pull_request:
     branches: [ main ]
 
+env:
+  PUBLIC_BASE_PATH: /timeline-d3
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,8 +34,6 @@ jobs:
 
     - name: Build with Vite
       run: pnpm build
-      env:
-        PUBLIC_BASE_PATH: /timeline-d3
 
     - name: Verify output directory
       run: ls -la dist/ || echo "dist directory not found"

@@ -1,18 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        mono: ['Fira Code', 'monospace'],
+        sans: ["Inter", "sans-serif"],
+        mono: ["Fira Code", "monospace"],
       },
     },
   },
-  plugins: [
-    require('tw-animate-css'),
-  ],
-}
+  plugins: [require("tw-animate-css")],
+};
