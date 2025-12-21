@@ -16,16 +16,8 @@ jobs:
       with:
         persist-credentials: false
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
-        cache: 'pnpm'
-
     - name: Setup pnpm
       uses: pnpm/action-setup@v4.2.0
-      with:
-        version: 8
 
     - name: Install dependencies
       run: pnpm install --frozen-lockfile
@@ -62,12 +54,3 @@ jobs:
         cname: ''
       continue-on-error: true
 
-    - name: Check deployment status
-      if: always() && github.ref == 'refs/heads/main'
-      run: |
-        echo "Build completed successfully"
-        echo "If GitHub Pages deployment failed, please check:"
-        echo "1. GitHub Pages is enabled in repository settings"
-        echo "2. The gh-pages branch exists or can be created"
-        echo "3. The GITHUB_TOKEN has write permissions"
-        echo "4. The repository is public (or GitHub Pages is enabled for private repos)"
