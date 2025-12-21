@@ -38,7 +38,7 @@ jobs:
       run: ls -la dist/ || echo "dist directory not found"
 
     - name: Check index.html
-      run: test -f dist/index.html && echo "index.html found" || echo "index.html not found"
+      run: cat dist/index.html 
 
     - name: Upload static build artifact
       id: deployment
